@@ -602,3 +602,1012 @@ spinning = false;
 
 </body>
 </html>
+<!DOCTYPE html>
+<html>
+<head>
+<title>Swamp Fishing Roulette</title>
+<style>
+body {
+background: #2f4f2f; /* swamp */
+text-align: center;
+color: white;
+font-family: Arial;
+}
+
+#game {
+position: relative;
+width: 400px;
+height: 400px;
+margin: 40px auto;
+overflow: hidden;
+}
+
+#wheel {
+width: 100%;
+height: 100%;
+border-radius: 50%;
+background: conic-gradient(
+#6b8e23 0deg 200deg,
+#3b5d1f 200deg 300deg,
+#1e3d14 300deg 360deg
+);
+transition: transform 4s cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+.fish {
+position: absolute;
+width: 40px;
+height: 40px;
+background-size: contain;
+background-repeat: no-repeat;
+animation: swim 2s infinite alternate;
+}
+
+@keyframes swim {
+from { transform: translateY(0px); }
+to { transform: translateY(10px); }
+}
+
+button {
+padding: 15px 30px;
+font-size: 18px;
+cursor: pointer;
+}
+
+#multiplierDisplay {
+font-size: 22px;
+margin-top: 15px;
+}
+</style>
+</head>
+<body>
+
+<h1>🎣 Swamp Fishing Roulette</h1>
+
+<div id="game">
+<div id="wheel"></div>
+</div>
+
+<button onclick="spin()">SPIN</button>
+
+<h2 id="multiplierDisplay">Multiplier: x1</h2>
+
+<script>
+let spinning = false;
+
+// Fish types
+const fishTypes = [
+{name: "Lil Gills", img: "images/lilgill.png", minLength: 5, maxLength: 15},
+{name: "Smallmouth", img: "images/smallmouth.png", minLength: 10, maxLength: 25},
+{name: "Largemouth", img: "images/largemouth.png", minLength: 20, maxLength: 40},
+];
+
+function spawnFish() {
+// Remove old fish
+document.querySelectorAll(".fish").forEach(f => f.remove());
+
+// Visual bonus: spawn 1–3 fish randomly
+let count = Math.floor(Math.random() * 3) + 1;
+for (let i = 0; i < count; i++) {
+// Random fish type for visual only
+const randIndex = Math.floor(Math.random()*fishTypes.length);
+const fish = fishTypes[randIndex];
+
+let fishEl = document.createElement("div");
+fishEl.className = "fish";
+fishEl.style.backgroundImage = `url(${fish.img})`;
+
+fishEl.style.left = Math.random() * 350 + "px";
+fishEl.style.top = Math.random() * 350 + "px";
+
+document.getElementById("game").appendChild(fishEl);
+}
+}
+
+function spin() {
+if (spinning) return;
+spinning = true;
+
+spawnFish();
+
+// Randomly select the fish that is “caught”
+const caughtFishIndex = Math.floor(Math.random() * fishTypes.length);
+const caughtFish = fishTypes[caughtFishIndex];
+
+// Random fish length within its range
+const length = (Math.random() * (caughtFish.maxLength - caughtFish.minLength) + caughtFish.minLength).toFixed(1);
+
+// Multiplier is based on fish length
+const multiplier = Math.max(1, Math.round(length / 5));
+
+document.getElementById("multiplierDisplay").innerText = `Multiplier: x${multiplier}`;
+
+// Spin wheel (visual)
+let deg = Math.floor(Math.random() * 360) + 1080;
+document.getElementById("wheel").style.transform = "rotate(" + deg + "deg)";
+
+setTimeout(() => {
+alert(`You caught a ${caughtFish.name}!\nLength: ${length} inches\nMultiplier: x${multiplier}`);
+spinning = false;
+}, 4000);
+}
+</script>
+
+</body>
+</html>
+<!DOCTYPE html>
+<html>
+<head>
+<title>Swamp Fishing Roulette</title>
+<style>
+body {
+background: #2f4f2f;
+text-align: center;
+color: white;
+font-family: Arial;
+}
+
+#game {
+position: relative;
+width: 400px;
+height: 400px;
+margin: 40px auto;
+overflow: hidden;
+background: url('images/swamp-bg.png') center/cover no-repeat;
+border-radius: 20px;
+border: 2px solid #3b5d1f;
+}
+
+#wheel {
+width: 100%;
+height: 100%;
+border-radius: 50%;
+background: conic-gradient(
+#6b8e23 0deg 200deg,
+#3b5d1f 200deg 300deg,
+#1e3d14 300deg 360deg
+);
+transition: transform 4s cubic-bezier(0.33, 1, 0.68, 1);
+position: absolute;
+top: 0;
+left: 0;
+}
+
+.fish {
+position: absolute;
+width: 40px;
+height: 40px;
+background-size: contain;
+background-repeat: no-repeat;
+animation: swim 2s infinite alternate;
+}
+
+@keyframes swim {
+from { transform: translateY(0px); }
+to { transform: translateY(10px); }
+}
+
+@keyframes caught {
+0% { transform: translateY(0px) scale(1); opacity: 1; }
+100% { transform: translateY(150px) scale(1.5); opacity: 0; }
+}
+
+button {
+padding: 15px 30px;
+font-size: 18px;
+cursor: pointer;
+}
+
+#multiplierDisplay {
+font-size: 22px;
+margin-top: 15px;
+}
+</style>
+</head>
+<body>
+
+<h1>🎣 Swamp Fishing Roulette</h1>
+
+<div id="game">
+<div id="wheel"></div>
+</div>
+
+<button onclick="spin()">SPIN</button>
+<h2 id="multiplierDisplay">Multiplier: x1</h2>
+
+<script>
+let spinning = false;
+
+const fishTypes = [
+{name: "Lil Gills", img: "images/lilgill.png", minLength: 5, maxLength: 15},
+{name: "Smallmouth", img: "images/smallmouth.png", minLength: 10, maxLength: 25},
+{name: "Largemouth", img: "images/largemouth.png", minLength: 20, maxLength: 40},
+];
+
+function spawnFish() {
+document.querySelectorAll(".fish").forEach(f => f.remove());
+
+let count = Math.floor(Math.random() * 3) + 1;
+for (let i = 0; i < count; i++) {
+const randIndex = Math.floor(Math.random()*fishTypes.length);
+const fish = fishTypes[randIndex];
+
+let fishEl = document.createElement("div");
+fishEl.className = "fish";
+fishEl.style.backgroundImage = `url(${fish.img})`;
+
+fishEl.style.left = Math.random() * 350 + "px";
+fishEl.style.top = Math.random() * 350 + "px";
+
+document.getElementById("game").appendChild(fishEl);
+}
+}
+
+function spin() {
+if (spinning) return;
+spinning = true;
+
+spawnFish();
+
+// Randomly select the fish that is caught
+const caughtFishIndex = Math.floor(Math.random() * fishTypes.length);
+const caughtFish = fishTypes[caughtFishIndex];
+
+// Random fish length
+const length = (Math.random() * (caughtFish.maxLength - caughtFish.minLength) + caughtFish.minLength).toFixed(1);
+
+// Multiplier based on length
+const multiplier = Math.max(1, Math.round(length / 5));
+document.getElementById("multiplierDisplay").innerText = `Multiplier: x${multiplier}`;
+
+// Spin wheel visually
+let deg = Math.floor(Math.random() * 360) + 1080;
+document.getElementById("wheel").style.transform = "rotate(" + deg + "deg)";
+
+// Show caught fish animation
+const caughtEl = document.createElement("div");
+caughtEl.className = "fish";
+caughtEl.style.backgroundImage = `url(${caughtFish.img})`;
+caughtEl.style.left = "180px";
+caughtEl.style.top = "180px";
+caughtEl.style.animation = "caught 2s forwards";
+document.getElementById("game").appendChild(caughtEl);
+
+setTimeout(() => {
+alert(`You caught a ${caughtFish.name}!\nLength: ${length} inches\nMultiplier: x${multiplier}`);
+spinning = false;
+}, 4000);
+}
+</script>
+
+</body>
+</html>
+<!DOCTYPE html>
+<html>
+<head>
+<title>Swamp Fishing Roulette</title>
+<style>
+body {
+background: #2f4f2f;
+text-align: center;
+color: white;
+font-family: Arial;
+}
+
+#game {
+position: relative;
+width: 400px;
+height: 400px;
+margin: 40px auto;
+overflow: hidden;
+background: url('images/swamp-bg.png') center/cover no-repeat;
+border-radius: 20px;
+border: 2px solid #3b5d1f;
+}
+
+#wheel {
+width: 100%;
+height: 100%;
+border-radius: 50%;
+background: conic-gradient(
+#6b8e23 0deg 200deg,
+#3b5d1f 200deg 300deg,
+#1e3d14 300deg 360deg
+);
+transition: transform 4s cubic-bezier(0.33, 1, 0.68, 1);
+position: absolute;
+top: 0;
+left: 0;
+}
+
+.fish {
+position: absolute;
+width: 40px;
+height: 40px;
+background-size: contain;
+background-repeat: no-repeat;
+animation: swim 2s infinite alternate;
+}
+
+@keyframes swim {
+from { transform: translateY(0px); }
+to { transform: translateY(10px); }
+}
+
+@keyframes caught {
+0% { transform: translateY(0px) scale(1); opacity: 1; }
+100% { transform: translateY(150px) scale(1.5); opacity: 0; }
+}
+
+button {
+padding: 15px 30px;
+font-size: 18px;
+cursor: pointer;
+}
+
+#multiplierDisplay {
+font-size: 22px;
+margin-top: 15px;
+}
+</style>
+</head>
+<body>
+
+<h1>🎣 Swamp Fishing Roulette</h1>
+
+<div id="game">
+<div id="wheel"></div>
+</div>
+
+<button onclick="spin()">SPIN</button>
+<h2 id="multiplierDisplay">Multiplier: x1</h2>
+
+<script>
+let spinning = false;
+
+const fishTypes = [
+{name: "Lil Gills", img: "images/lilgill.png", minLength: 5, maxLength: 15},
+{name: "Smallmouth", img: "images/smallmouth.png", minLength: 10, maxLength: 25},
+{name: "Largemouth", img: "images/largemouth.png", minLength: 20, maxLength: 40},
+];
+
+function spawnFish() {
+document.querySelectorAll(".fish").forEach(f => f.remove());
+let bonusMultiplier = 0;
+
+// Spawn 2–3 visual fish for bonus effect
+let count = Math.floor(Math.random() * 2) + 2;
+for (let i = 0; i < count; i++) {
+const randIndex = Math.floor(Math.random()*fishTypes.length);
+const fish = fishTypes[randIndex];
+
+let fishEl = document.createElement("div");
+fishEl.className = "fish";
+fishEl.style.backgroundImage = `url(${fish.img})`;
+fishEl.dataset.multiplier = Math.max(1, Math.round(((Math.random()*(fish.maxLength-fish.minLength)+fish.minLength)/10)));
+fishEl.style.left = Math.random() * 350 + "px";
+fishEl.style.top = Math.random() * 350 + "px";
+
+document.getElementById("game").appendChild(fishEl);
+
+// Sum bonus multiplier
+bonusMultiplier += parseInt(fishEl.dataset.multiplier);
+}
+
+return bonusMultiplier;
+}
+
+function spin() {
+if (spinning) return;
+spinning = true;
+
+// Spawn visual bonus fish
+const bonusMultiplier = spawnFish();
+
+// Select caught fish
+const caughtFishIndex = Math.floor(Math.random() * fishTypes.length);
+const caughtFish = fishTypes[caughtFishIndex];
+const length = (Math.random() * (caughtFish.maxLength - caughtFish.minLength) + caughtFish.minLength).toFixed(1);
+const mainMultiplier = Math.max(1, Math.round(length / 5));
+
+// Total multiplier = main fish + bonus fish
+const totalMultiplier = mainMultiplier + bonusMultiplier;
+document.getElementById("multiplierDisplay").innerText = `Multiplier: x${totalMultiplier}`;
+
+// Spin wheel visually
+let deg = Math.floor(Math.random() * 360) + 1080;
+document.getElementById("wheel").style.transform = "rotate(" + deg + "deg)";
+
+// Animate caught fish
+const caughtEl = document.createElement("div");
+caughtEl.className = "fish";
+caughtEl.style.backgroundImage = `url(${caughtFish.img})`;
+caughtEl.style.left = "180px";
+caughtEl.style.top = "180px";
+caughtEl.style.animation = "caught 2s forwards";
+document.getElementById("game").appendChild(caughtEl);
+
+setTimeout(() => {
+alert(`You caught a ${caughtFish.name}!\nLength: ${length} inches\nTotal Multiplier: x${totalMultiplier}`);
+spinning = false;
+}, 4000);
+}
+</script>
+
+</body>
+</html>
+<!DOCTYPE html>
+<html>
+<head>
+<title>Swamp Fishing Roulette</title>
+<style>
+body {
+background: #2f4f2f;
+text-align: center;
+color: white;
+font-family: Arial;
+}
+
+#game {
+position: relative;
+width: 400px;
+height: 400px;
+margin: 20px auto;
+overflow: hidden;
+background: url('images/swamp-bg.png') center/cover no-repeat;
+border-radius: 20px;
+border: 2px solid #3b5d1f;
+}
+
+#wheel {
+width: 100%;
+height: 100%;
+border-radius: 50%;
+background: conic-gradient(
+#6b8e23 0deg 200deg,
+#3b5d1f 200deg 300deg,
+#1e3d14 300deg 360deg
+);
+transition: transform 4s cubic-bezier(0.33, 1, 0.68, 1);
+position: absolute;
+top: 0;
+left: 0;
+}
+
+.fish {
+position: absolute;
+width: 40px;
+height: 40px;
+background-size: contain;
+background-repeat: no-repeat;
+animation: swim 2s infinite alternate;
+}
+
+@keyframes swim {
+from { transform: translateY(0px); }
+to { transform: translateY(10px); }
+}
+
+@keyframes caught {
+0% { transform: translateY(0px) scale(1); opacity: 1; }
+100% { transform: translateY(150px) scale(1.5); opacity: 0; }
+}
+
+button {
+padding: 12px 20px;
+font-size: 16px;
+cursor: pointer;
+margin: 5px;
+}
+
+#multiplierDisplay, #totalDisplay {
+font-size: 22px;
+margin-top: 10px;
+}
+</style>
+</head>
+<body>
+
+<h1>🎣 Swamp Fishing Roulette</h1>
+
+<div>
+<h3>Place your bet:</h3>
+<button onclick="placeBet('Lil Gills')">Lil Gills</button>
+<button onclick="placeBet('Smallmouth')">Smallmouth</button>
+<button onclick="placeBet('Largemouth')">Largemouth</button>
+</div>
+
+<div id="game">
+<div id="wheel"></div>
+</div>
+
+<button onclick="spin()">SPIN</button>
+
+<h2 id="multiplierDisplay">Multiplier: x1</h2>
+<h2 id="totalDisplay">Total Winnings: x0</h2>
+
+<script>
+let spinning = false;
+let playerBet = null;
+let totalWinnings = 0;
+
+const fishTypes = [
+{name: "Lil Gills", img: "images/lilgill.png", minLength: 5, maxLength: 15},
+{name: "Smallmouth", img: "images/smallmouth.png", minLength: 10, maxLength: 25},
+{name: "Largemouth", img: "images/largemouth.png", minLength: 20, maxLength: 40},
+];
+
+function placeBet(fishName) {
+playerBet = fishName;
+alert(`You bet on ${fishName}!`);
+}
+
+function spawnFish() {
+document.querySelectorAll(".fish").forEach(f => f.remove());
+let bonusMultiplier = 0;
+
+// Spawn 2–3 visual fish for bonus effect
+let count = Math.floor(Math.random() * 2) + 2;
+for (let i = 0; i < count; i++) {
+const randIndex = Math.floor(Math.random() * fishTypes.length);
+const fish = fishTypes[randIndex];
+
+let fishEl = document.createElement("div");
+fishEl.className = "fish";
+fishEl.style.backgroundImage = `url(${fish.img})`;
+fishEl.dataset.multiplier = Math.max(1, Math.round(((Math.random() * (fish.maxLength - fish.minLength) + fish.minLength) / 10)));
+fishEl.style.left = Math.random() * 350 + "px";
+fishEl.style.top = Math.random() * 350 + "px";
+
+document.getElementById("game").appendChild(fishEl);
+
+bonusMultiplier += parseInt(fishEl.dataset.multiplier);
+}
+
+return bonusMultiplier;
+}
+
+function spin() {
+if (spinning) return;
+if (!playerBet) {
+alert("Place your bet first!");
+return;
+}
+
+spinning = true;
+
+// Spawn bonus fish
+const bonusMultiplier = spawnFish();
+
+// Select caught fish
+const caughtFishIndex = Math.floor(Math.random() * fishTypes.length);
+const caughtFish = fishTypes[caughtFishIndex];
+const length = (Math.random() * (caughtFish.maxLength - caughtFish.minLength) + caughtFish.minLength).toFixed(1);
+const mainMultiplier = Math.max(1, Math.round(length / 5));
+
+// Total multiplier = main + bonus
+let totalMultiplier = mainMultiplier + bonusMultiplier;
+
+// Bonus: if player bet matches caught fish, extra multiplier
+if (playerBet === caughtFish.name) {
+totalMultiplier *= 2; // double if bet correct
+}
+
+document.getElementById("multiplierDisplay").innerText = `Multiplier: x${totalMultiplier}`;
+
+// Update total winnings
+totalWinnings += totalMultiplier;
+document.getElementById("totalDisplay").innerText = `Total Winnings: x${totalWinnings}`;
+
+// Spin wheel visually
+let deg = Math.floor(Math.random() * 360) + 1080;
+document.getElementById("wheel").style.transform = "rotate(" + deg + "deg)";
+
+// Animate caught fish
+const caughtEl = document.createElement("div");
+caughtEl.className = "fish";
+caughtEl.style.backgroundImage = `url(${caughtFish.img})`;
+caughtEl.style.left = "180px";
+caughtEl.style.top = "180px";
+caughtEl.style.animation = "caught 2s forwards";
+document.getElementById("game").appendChild(caughtEl);
+
+setTimeout(() => {
+alert(`You caught a ${caughtFish.name}!\nLength: ${length} inches\nSpin Multiplier: x${totalMultiplier}\nTotal Winnings: x${totalWinnings}`);
+spinning = false;
+playerBet = null; // reset bet
+}, 4000);
+}
+</script>
+
+</body>
+</html>
+<!DOCTYPE html>
+<html>
+<head>
+<title>Swamp Fishing Roulette Pro</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+body {
+background: #2f4f2f;
+text-align: center;
+color: white;
+font-family: Arial;
+margin:0; padding:0;
+}
+
+#gameContainer {
+display:flex;
+flex-direction: column;
+align-items:center;
+margin-top: 20px;
+}
+
+#game {
+position: relative;
+width: 90vw;
+max-width: 400px;
+height: 90vw;
+max-height: 400px;
+background: url('https://i.imgur.com/3XfZ7yU.png') center/cover no-repeat; /* placeholder swamp */
+border-radius: 20px;
+border: 2px solid #3b5d1f;
+overflow: hidden;
+}
+
+#wheel {
+width: 100%;
+height: 100%;
+border-radius: 50%;
+background: conic-gradient(
+#6b8e23 0deg 200deg,
+#3b5d1f 200deg 300deg,
+#1e3d14 300deg 360deg
+);
+transition: transform 4s cubic-bezier(0.33,1,0.68,1);
+position: absolute;
+top:0; left:0;
+}
+
+.fish {
+position: absolute;
+width: 10vw;
+max-width:40px;
+height: 10vw;
+max-height:40px;
+background-size: contain;
+background-repeat: no-repeat;
+animation: swim 2s infinite alternate;
+}
+
+@keyframes swim {
+from { transform: translateY(0px);}
+to { transform: translateY(10px);}
+}
+
+@keyframes caught {
+0% { transform: translateY(0px) scale(1); opacity:1;}
+100% { transform: translateY(150px) scale(1.5); opacity:0;}
+}
+
+button {
+padding: 12px 20px;
+font-size: 16px;
+cursor: pointer;
+margin: 5px;
+}
+
+#multiplierDisplay, #totalDisplay {
+font-size: 18px;
+margin-top:5px;
+}
+
+#leaderboard {
+margin-top: 10px;
+text-align:left;
+max-width:400px;
+width:90vw;
+border:1px solid #6b8e23;
+padding:10px;
+border-radius:10px;
+background: rgba(0,0,0,0.4);
+}
+</style>
+</head>
+<body>
+
+<h1>🎣 Swamp Fishing Roulette Pro</h1>
+
+<div>
+<h3>Place your bet:</h3>
+<button onclick="placeBet('Lil Gills')">Lil Gills</button>
+<button onclick="placeBet('Smallmouth')">Smallmouth</button>
+<button onclick="placeBet('Largemouth')">Largemouth</button>
+</div>
+
+<div id="gameContainer">
+<div id="game">
+<div id="wheel"></div>
+</div>
+
+<button onclick="spin()">SPIN</button>
+
+<h2 id="multiplierDisplay">Multiplier: x1</h2>
+<h2 id="totalDisplay">Total Winnings: x0</h2>
+
+<div id="leaderboard">
+<h3>🏆 Top 3 Catches</h3>
+<ol id="leaderList"></ol>
+</div>
+</div>
+
+<audio id="splashSound" src="https://www.soundjay.com/water/splash-1.mp3"></audio>
+<audio id="spinSound" src="https://www.soundjay.com/button/button-16.mp3"></audio>
+
+<script>
+let spinning = false;
+let playerBet = null;
+let totalWinnings = 0;
+let topCatches = [];
+
+const fishTypes = [
+{name: "Lil Gills", img:"https://i.imgur.com/2i1HKJP.png", minLength:5,maxLength:15},
+{name:"Smallmouth", img:"https://i.imgur.com/FnCJh2N.png", minLength:10,maxLength:25},
+{name:"Largemouth", img:"https://i.imgur.com/ifjCevR.png", minLength:20,maxLength:40}
+];
+
+function placeBet(fishName){
+playerBet=fishName;
+alert(`You bet on ${fishName}!`);
+}
+
+function spawnFish(){
+document.querySelectorAll(".fish").forEach(f=>f.remove());
+let bonusMultiplier=0;
+let count=Math.floor(Math.random()*2)+2;
+
+for(let i=0;i<count;i++){
+const randIndex=Math.floor(Math.random()*fishTypes.length);
+const fish=fishTypes[randIndex];
+let fishEl=document.createElement("div");
+fishEl.className="fish";
+fishEl.style.backgroundImage=`url(${fish.img})`;
+fishEl.dataset.multiplier=Math.max(1,Math.round(((Math.random()*(fish.maxLength-fish.minLength)+fish.minLength)/10)));
+fishEl.style.left=Math.random()*70+"%";
+fishEl.style.top=Math.random()*70+"%";
+document.getElementById("game").appendChild(fishEl);
+bonusMultiplier+=parseInt(fishEl.dataset.multiplier);
+}
+return bonusMultiplier;
+}
+
+function updateLeaderboard(caughtFish,length){
+topCatches.push({name:caughtFish.name,length:length});
+topCatches.sort((a,b)=>b.length-a.length);
+if(topCatches.length>3) topCatches.length=3;
+const list=document.getElementById("leaderList");
+list.innerHTML="";
+topCatches.forEach(f=>{list.innerHTML+=`<li>${f.name} - ${f.length} in</li>`});
+}
+
+function spin(){
+if(spinning) return;
+if(!playerBet){
+alert("Place your bet first!");
+return;
+}
+spinning=true;
+document.getElementById("spinSound").play();
+
+const bonusMultiplier=spawnFish();
+const caughtFishIndex=Math.floor(Math.random()*fishTypes.length);
+const caughtFish=fishTypes[caughtFishIndex];
+const length=(Math.random()*(caughtFish.maxLength-caughtFish.minLength)+caughtFish.minLength).toFixed(1);
+const mainMultiplier=Math.max(1,Math.round(length/5));
+let totalMultiplier=mainMultiplier+bonusMultiplier;
+if(playerBet===caughtFish.name) totalMultiplier*=2;
+
+document.getElementById("multiplierDisplay").innerText=`Multiplier: x${totalMultiplier}`;
+totalWinnings+=totalMultiplier;
+document.getElementById("totalDisplay").innerText=`Total Winnings: x${totalWinnings}`;
+
+let deg=Math.floor(Math.random()*360)+1080;
+document.getElementById("wheel").style.transform=`rotate(${deg}deg)`;
+
+const caughtEl=document.createElement("div");
+caughtEl.className="fish";
+caughtEl.style.backgroundImage=`url(${caughtFish.img})`;
+caughtEl.style.left="40%";
+caughtEl.style.top="40%";
+caughtEl.style.animation="caught 2s forwards";
+document.getElementById("game").appendChild(caughtEl);
+
+document.getElementById("splashSound").play();
+updateLeaderboard(caughtFish,length);
+
+setTimeout(()=>{
+alert(`You caught a ${caughtFish.name}!\nLength: ${length} inches\nSpin Multiplier: x${totalMultiplier}\nTotal Winnings: x${totalWinnings}`);
+spinning=false;
+playerBet=null;
+},4000);
+}
+</script>
+</body>
+</html>
+<!DOCTYPE html>
+<html>
+<head>
+<title>Swamp Fishing Roulette Persistent</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+body { background: #2f4f2f; text-align: center; color: white; font-family: Arial; margin:0; padding:0; }
+#gameContainer { display:flex; flex-direction: column; align-items:center; margin-top: 20px; }
+#game {
+position: relative;
+width: 90vw;
+max-width: 400px;
+height: 90vw;
+max-height: 400px;
+background: url('https://i.imgur.com/3XfZ7yU.png') center/cover no-repeat;
+border-radius: 20px;
+border: 2px solid #3b5d1f;
+overflow: hidden;
+}
+#wheel {
+width: 100%; height: 100%;
+border-radius: 50%;
+background: conic-gradient(#6b8e23 0deg 200deg,#3b5d1f 200deg 300deg,#1e3d14 300deg 360deg);
+transition: transform 4s cubic-bezier(0.33,1,0.68,1);
+position: absolute; top:0; left:0;
+}
+.fish { position: absolute; width: 10vw; max-width:40px; height: 10vw; max-height:40px; background-size: contain; background-repeat: no-repeat; animation: swim 2s infinite alternate; }
+@keyframes swim { from { transform: translateY(0px);} to { transform: translateY(10px);} }
+@keyframes caught { 0% { transform: translateY(0px) scale(1); opacity:1;} 100% { transform: translateY(150px) scale(1.5); opacity:0;} }
+
+button { padding: 12px 20px; font-size: 16px; cursor: pointer; margin: 5px; }
+#multiplierDisplay, #totalDisplay { font-size: 18px; margin-top:5px; }
+#leaderboard { margin-top: 10px; text-align:left; max-width:400px; width:90vw; border:1px solid #6b8e23; padding:10px; border-radius:10px; background: rgba(0,0,0,0.4); }
+
+.confetti { position: absolute; width: 8px; height: 8px; opacity: 0.8; pointer-events: none; animation: confettiFall 1s linear forwards; }
+@keyframes confettiFall { 0% { transform: translate(0,0) rotate(0deg);} 100% { transform: translate(var(--x), 150px) rotate(360deg); opacity:0;} }
+</style>
+</head>
+<body>
+
+<h1>🎣 Swamp Fishing Roulette Persistent</h1>
+<div>
+<h3>Place your bet:</h3>
+<button onclick="placeBet('Lil Gills')">Lil Gills</button>
+<button onclick="placeBet('Smallmouth')">Smallmouth</button>
+<button onclick="placeBet('Largemouth')">Largemouth</button>
+</div>
+
+<div id="gameContainer">
+<div id="game">
+<div id="wheel"></div>
+</div>
+<button onclick="spin()">SPIN</button>
+<h2 id="multiplierDisplay">Multiplier: x1</h2>
+<h2 id="totalDisplay">Total Winnings: x0</h2>
+<div id="leaderboard">
+<h3>🏆 Top 3 Catches</h3>
+<ol id="leaderList"></ol>
+</div>
+</div>
+
+<audio id="splashSound" src="https://www.soundjay.com/water/splash-1.mp3"></audio>
+<audio id="spinSound" src="https://www.soundjay.com/button/button-16.mp3"></audio>
+
+<script>
+let spinning=false,playerBet=null,totalWinnings=0,topCatches=[];
+
+const fishTypes=[
+{name:"Lil Gills", img:"https://i.imgur.com/2i1HKJP.png", minLength:5,maxLength:15},
+{name:"Smallmouth", img:"https://i.imgur.com/FnCJh2N.png", minLength:10,maxLength:25},
+{name:"Largemouth", img:"https://i.imgur.com/ifjCevR.png", minLength:20,maxLength:40}];
+
+function loadData(){
+const savedTotal=localStorage.getItem("totalWinnings");
+const savedTop=localStorage.getItem("topCatches");
+if(savedTotal) totalWinnings=parseFloat(savedTotal);
+if(savedTop) topCatches=JSON.parse(savedTop);
+document.getElementById("totalDisplay").innerText=`Total Winnings: x${totalWinnings}`;
+updateLeaderboardDisplay();
+}
+function saveData(){
+localStorage.setItem("totalWinnings",totalWinnings);
+localStorage.setItem("topCatches",JSON.stringify(topCatches));
+}
+
+function placeBet(fishName){playerBet=fishName; alert(`You bet on ${fishName}!`);}
+function spawnFish(){
+document.querySelectorAll(".fish").forEach(f=>f.remove());
+let bonusMultiplier=0;
+let count=Math.floor(Math.random()*2)+2;
+for(let i=0;i<count;i++){
+const fish=fishTypes[Math.floor(Math.random()*fishTypes.length)];
+const el=document.createElement("div");
+el.className="fish";
+el.style.backgroundImage=`url(${fish.img})`;
+el.dataset.multiplier=Math.max(1,Math.round(((Math.random()*(fish.maxLength-fish.minLength)+fish.minLength)/10)));
+el.style.left=Math.random()*70+"%";
+el.style.top=Math.random()*70+"%";
+document.getElementById("game").appendChild(el);
+bonusMultiplier+=parseInt(el.dataset.multiplier);
+}
+return bonusMultiplier;
+}
+
+function updateLeaderboard(fish,length){
+topCatches.push({name:fish.name,length:length});
+topCatches.sort((a,b)=>b.length-a.length);
+if(topCatches.length>3) topCatches.length=3;
+updateLeaderboardDisplay();
+saveData();
+}
+
+function updateLeaderboardDisplay(){
+const list=document.getElementById("leaderList");
+list.innerHTML="";
+topCatches.forEach(f=>{list.innerHTML+=`<li>${f.name} - ${f.length} in</li>`});
+}
+
+function createConfetti(x,y){
+for(let i=0;i<30;i++){
+const c=document.createElement("div");
+c.className="confetti";
+c.style.left=x+"px"; c.style.top=y+"px";
+c.style.background=['#ff0','#f00','#0f0','#0ff','#f0f'][Math.floor(Math.random()*5)];
+c.style.setProperty('--x',(Math.random()*100-50)+'px');
+document.getElementById("game").appendChild(c);
+setTimeout(()=>c.remove(),1000);
+}
+}
+
+function spin(){
+if(spinning) return;
+if(!playerBet){alert("Place your bet first!"); return;}
+spinning=true;
+document.getElementById("spinSound").play();
+const bonusMultiplier=spawnFish();
+const caughtFish=fishTypes[Math.floor(Math.random()*fishTypes.length)];
+const length=(Math.random()*(caughtFish.maxLength-caughtFish.minLength)+caughtFish.minLength).toFixed(1);
+const mainMultiplier=Math.max(1,Math.round(length/5));
+let totalMultiplier=mainMultiplier+bonusMultiplier;
+let confettiTrigger=false;
+if(playerBet===caughtFish.name){totalMultiplier*=2; confettiTrigger=true;}
+if(caughtFish.name==="Largemouth") confettiTrigger=true;
+
+document.getElementById("multiplierDisplay").innerText=`Multiplier: x${totalMultiplier}`;
+totalWinnings+=totalMultiplier;
+document.getElementById("totalDisplay").innerText=`Total Winnings: x${totalWinnings}`;
+
+updateLeaderboard(caughtFish,length);
+
+let deg=Math.floor(Math.random()*360)+1080;
+document.getElementById("wheel").style.transform=`rotate(${deg}deg)`;
+
+const caughtEl=document.createElement("div");
+caughtEl.className="fish";
+caughtEl.style.backgroundImage=`url(${caughtFish.img})`;
+caughtEl.style.left="40%"; caughtEl.style.top="40%";
+caughtEl.style.animation="caught 2s forwards";
+document.getElementById("game").appendChild(caughtEl);
+
+document.getElementById("splashSound").play();
+if(confettiTrigger){
+const rect=document.getElementById("game").getBoundingClientRect();
+createConfetti(rect.width/2,rect.height/2);
+}
+
+setTimeout(()=>{
+alert(`You caught a ${caughtFish.name}!\nLength: ${length} inches\nSpin Multiplier: x${totalMultiplier}\nTotal Winnings: x${totalWinnings}`);
+spinning=false;
+playerBet=null;
+},4000);
+}
+
+loadData(); // Load saved data on page load
+</script>
+</body>
+</html>
