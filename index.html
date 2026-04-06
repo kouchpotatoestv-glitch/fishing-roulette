@@ -91,3 +91,108 @@ spinning = false;
 
 </body>
 </html>
+<!DOCTYPE html>
+<html>
+<head>
+<title>Swamp Fishing Roulette</title>
+<style>
+body {
+background: #2f4f2f; /* swamp color */
+text-align: center;
+color: white;
+font-family: Arial;
+}
+
+#game {
+position: relative;
+width: 400px;
+height: 400px;
+margin: 40px auto;
+}
+
+#wheel {
+width: 100%;
+height: 100%;
+border-radius: 50%;
+background: conic-gradient(
+#6b8e23 0deg 200deg,
+#3b5d1f 200deg 300deg,
+#1e3d14 300deg 360deg
+);
+transition: transform 4s ease-out;
+}
+
+.fish {
+position: absolute;
+font-size: 30px;
+animation: swim 2s infinite alternate;
+}
+
+@keyframes swim {
+from { transform: translateY(0px); }
+to { transform: translateY(10px); }
+}
+
+button {
+padding: 15px 30px;
+font-size: 18px;
+cursor: pointer;
+}
+</style>
+</head>
+<body>
+
+<h1>🎣 Swamp Fishing Roulette</h1>
+
+<div id="game">
+<div id="wheel"></div>
+</div>
+
+<button onclick="spin()">SPIN</button>
+
+<h2 id="result">Multiplier: x1</h2>
+
+<script>
+let spinning = false;
+
+function spawnFish() {
+// remove old fish
+document.querySelectorAll(".fish").forEach(f => f.remove());
+
+let fishTypes = ["🐟","🐠","🐡"]; // placeholder fish
+let count = Math.floor(Math.random() * 3) + 1; // 1–3 fish
+
+for (let i = 0; i < count; i++) {
+let fish = document.createElement("div");
+fish.className = "fish";
+fish.innerText = fishTypes[Math.floor(Math.random()*fishTypes.length)];
+
+// random position inside the wheel area
+fish.style.left = Math.random() * 350 + "px";
+fish.style.top = Math.random() * 350 + "px";
+
+document.getElementById("game").appendChild(fish);
+}
+}
+
+function spin() {
+if (spinning) return;
+spinning = true;
+
+spawnFish(); // 🔥 multiple fish appear
+
+let multi = Math.floor(Math.random()*5)+1; // x1–x5 multiplier
+document.getElementById("result").innerText = "Multiplier: x" + multi;
+
+let deg = Math.floor(Math.random()*360) + 1080; // 3 spins + random
+document.getElementById("wheel").style.transform = "rotate(" + deg + "deg)";
+
+setTimeout(() => {
+alert("Catch! x" + multi);
+spinning = false;
+}, 4000); // match spin duration
+}
+</script>
+
+</body>
+</html>
