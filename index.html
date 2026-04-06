@@ -31,3 +31,63 @@ alert("You caught a fish! x" + multi);
 
 </body>
 </html>
+<!DOCTYPE html>
+<html>
+<head>
+<title>Swamp Fishing Roulette</title>
+<style>
+body {
+background: #2f4f2f; /* swamp color */
+text-align: center;
+color: white;
+font-family: Arial;
+}
+
+#wheel {
+width: 300px;
+height: 300px;
+margin: 50px auto;
+border-radius: 50%;
+background: conic-gradient(#6b8e23, #556b2f, #6b8e23, #556b2f);
+transition: transform 4s ease-out; /* smooth spin */
+}
+
+button {
+padding: 15px;
+font-size: 20px;
+cursor: pointer;
+}
+</style>
+</head>
+<body>
+
+<h1>🎣 Swamp Fishing Roulette</h1>
+
+<div id="wheel"></div>
+
+<button onclick="spin()">SPIN</button>
+
+<h2 id="result">Multiplier: x1</h2>
+
+<script>
+let spinning = false;
+
+function spin() {
+if (spinning) return; // prevent double spin
+spinning = true;
+
+let multiplier = Math.floor(Math.random() * 5) + 1; // random x1–x5
+document.getElementById("result").innerText = "Multiplier: x" + multiplier;
+
+let deg = Math.floor(Math.random() * 360) + 1080; // 3 full spins + random
+document.getElementById("wheel").style.transform = "rotate(" + deg + "deg)";
+
+setTimeout(() => {
+alert("You caught a fish! x" + multiplier);
+spinning = false;
+}, 4000); // match transition duration
+}
+</script>
+
+</body>
+</html>
