@@ -196,3 +196,409 @@ spinning = false;
 
 </body>
 </html>
+<!DOCTYPE html>
+<html>
+<head>
+<title>Swamp Fishing Roulette</title>
+<style>
+body {
+background: #2f4f2f; /* swamp color */
+text-align: center;
+color: white;
+font-family: Arial;
+}
+
+#game {
+position: relative;
+width: 400px;
+height: 400px;
+margin: 40px auto;
+}
+
+#wheel {
+width: 100%;
+height: 100%;
+border-radius: 50%;
+background: conic-gradient(
+#6b8e23 0deg 200deg,
+#3b5d1f 200deg 300deg,
+#1e3d14 300deg 360deg
+);
+transition: transform 4s ease-out;
+}
+
+.fish {
+position: absolute;
+width: 40px;
+height: 40px;
+font-size: 28px;
+animation: swim 2s infinite alternate;
+}
+
+@keyframes swim {
+from { transform: translateY(0px); }
+to { transform: translateY(10px); }
+}
+
+button {
+padding: 15px 30px;
+font-size: 18px;
+cursor: pointer;
+}
+</style>
+</head>
+<body>
+
+<h1>🎣 Swamp Fishing Roulette</h1>
+
+<div id="game">
+<div id="wheel"></div>
+</div>
+
+<button onclick="spin()">SPIN</button>
+
+<h2 id="result">Multiplier: x1</h2>
+
+<script>
+let spinning = false;
+
+// Define fish types and slots
+const fishTypes = [
+{name: "Lil Gills", emoji: "🐟", slots: 4, multiplier: 1},
+{name: "Smallmouth", emoji: "🐠", slots: 2, multiplier: 2},
+{name: "Largemouth", emoji: "🐡", slots: 1, multiplier: 5},
+];
+
+function spawnFish() {
+// Remove old fish
+document.querySelectorAll(".fish").forEach(f => f.remove());
+
+// Choose 1–3 fish for bonus effect
+let count = Math.floor(Math.random() * 3) + 1;
+
+for (let i = 0; i < count; i++) {
+// Randomly pick a fish based on slot chance
+let totalSlots = fishTypes.reduce((a,f)=>a+f.slots,0);
+let rand = Math.floor(Math.random() * totalSlots);
+let chosenFish;
+let slotSum = 0;
+for (let fish of fishTypes) {
+slotSum += fish.slots;
+if (rand < slotSum) {
+chosenFish = fish;
+break;
+}
+}
+
+// Create fish element
+let fishEl = document.createElement("div");
+fishEl.className = "fish";
+fishEl.innerText = chosenFish.emoji;
+fishEl.dataset.multiplier = chosenFish.multiplier;
+
+// Random position in wheel area
+fishEl.style.left = Math.random() * 350 + "px";
+fishEl.style.top = Math.random() * 350 + "px";
+
+document.getElementById("game").appendChild(fishEl);
+}
+}
+
+function spin() {
+if (spinning) return;
+spinning = true;
+
+spawnFish();
+
+// Choose one fish randomly from displayed for multiplier
+const fishEls = document.querySelectorAll(".fish");
+const chosenFish = fishEls[Math.floor(Math.random() * fishEls.length)];
+const multi = chosenFish ? chosenFish.dataset.multiplier : 1;
+document.getElementById("result").innerText = "Multiplier: x" + multi;
+
+// Spin wheel
+let deg = Math.floor(Math.random() * 360) + 1080;
+document.getElementById("wheel").style.transform = "rotate(" + deg + "deg)";
+
+setTimeout(() => {
+alert(`You caught a fish! Multiplier x${multi}`);
+spinning = false;
+}, 4000);
+}
+</script>
+
+</body>
+</html>
+images/lilgill.png
+images/smallmouth.png
+images/largemouth.png
+<!DOCTYPE html>
+<html>
+<head>
+<title>Swamp Fishing Roulette</title>
+<style>
+body {
+background: #2f4f2f;
+text-align: center;
+color: white;
+font-family: Arial;
+}
+
+#game {
+position: relative;
+width: 400px;
+height: 400px;
+margin: 40px auto;
+overflow: hidden;
+}
+
+#wheel {
+width: 100%;
+height: 100%;
+border-radius: 50%;
+background: conic-gradient(
+#6b8e23 0deg 200deg,
+#3b5d1f 200deg 300deg,
+#1e3d14 300deg 360deg
+);
+transition: transform 4s ease-out;
+}
+
+.fish {
+position: absolute;
+width: 40px;
+height: 40px;
+background-size: contain;
+background-repeat: no-repeat;
+animation: swim 2s infinite alternate;
+}
+
+@keyframes swim {
+from { transform: translateY(0px); }
+to { transform: translateY(10px); }
+}
+
+button {
+padding: 15px 30px;
+font-size: 18px;
+cursor: pointer;
+}
+</style>
+</head>
+<body>
+
+<h1>🎣 Swamp Fishing Roulette</h1>
+
+<div id="game">
+<div id="wheel"></div>
+</div>
+
+<button onclick="spin()">SPIN</button>
+<h2 id="result">Multiplier: x1</h2>
+
+<script>
+let spinning = false;
+
+const fishTypes = [
+{name: "Lil Gills", img: "images/lilgill.png", slots: 4, multiplier: 1},
+{name: "Smallmouth", img: "images/smallmouth.png", slots: 2, multiplier: 2},
+{name: "Largemouth", img: "images/largemouth.png", slots: 1, multiplier: 5},
+];
+
+function spawnFish() {
+// Remove old fish
+document.querySelectorAll(".fish").forEach(f => f.remove());
+
+// Spawn 1–3 fish for visual bonus
+let count = Math.floor(Math.random() * 3) + 1;
+
+for (let i = 0; i < count; i++) {
+// Random fish based on slots
+let totalSlots = fishTypes.reduce((a,f)=>a+f.slots,0);
+let rand = Math.floor(Math.random()*totalSlots);
+let chosenFish;
+let slotSum = 0;
+for (let fish of fishTypes) {
+slotSum += fish.slots;
+if (rand < slotSum) {
+chosenFish = fish;
+break;
+}
+}
+
+// Create fish element
+let fishEl = document.createElement("div");
+fishEl.className = "fish";
+fishEl.style.backgroundImage = `url(${chosenFish.img})`;
+fishEl.dataset.multiplier = chosenFish.multiplier;
+
+// Random position in wheel area
+fishEl.style.left = Math.random() * 350 + "px";
+fishEl.style.top = Math.random() * 350 + "px";
+
+document.getElementById("game").appendChild(fishEl);
+}
+}
+
+function spin() {
+if (spinning) return;
+spinning = true;
+
+spawnFish();
+
+// Choose one fish randomly for multiplier
+const fishEls = document.querySelectorAll(".fish");
+const chosenFish = fishEls[Math.floor(Math.random() * fishEls.length)];
+const multi = chosenFish ? chosenFish.dataset.multiplier : 1;
+document.getElementById("result").innerText = "Multiplier: x" + multi;
+
+// Spin wheel
+let deg = Math.floor(Math.random() * 360) + 1080;
+document.getElementById("wheel").style.transform = "rotate(" + deg + "deg)";
+
+setTimeout(() => {
+alert(`You caught a fish! Multiplier x${multi}`);
+spinning = false;
+}, 4000);
+}
+</script>
+
+</body>
+</html>
+<!DOCTYPE html>
+<html>
+<head>
+<title>Swamp Fishing Roulette</title>
+<style>
+body {
+background: #2f4f2f;
+text-align: center;
+color: white;
+font-family: Arial;
+}
+
+#game {
+position: relative;
+width: 400px;
+height: 400px;
+margin: 40px auto;
+overflow: hidden;
+}
+
+#wheel {
+width: 100%;
+height: 100%;
+border-radius: 50%;
+background: conic-gradient(
+#6b8e23 0deg 200deg,
+#3b5d1f 200deg 300deg,
+#1e3d14 300deg 360deg
+);
+transition: transform 4s cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+.fish {
+position: absolute;
+width: 40px;
+height: 40px;
+background-size: contain;
+background-repeat: no-repeat;
+animation: swim 2s infinite alternate;
+}
+
+@keyframes swim {
+from { transform: translateY(0px); }
+to { transform: translateY(10px); }
+}
+
+button {
+padding: 15px 30px;
+font-size: 18px;
+cursor: pointer;
+}
+
+#multiplierDisplay {
+font-size: 22px;
+margin-top: 15px;
+}
+</style>
+</head>
+<body>
+
+<h1>🎣 Swamp Fishing Roulette</h1>
+
+<div id="game">
+<div id="wheel"></div>
+</div>
+
+<button onclick="spin()">SPIN</button>
+
+<h2 id="multiplierDisplay">Multiplier: x1</h2>
+
+<script>
+let spinning = false;
+
+// Fish types
+const fishTypes = [
+{name: "Lil Gills", img: "images/lilgill.png", slots: 4, multiplier: 1},
+{name: "Smallmouth", img: "images/smallmouth.png", slots: 2, multiplier: 2},
+{name: "Largemouth", img: "images/largemouth.png", slots: 1, multiplier: 5},
+];
+
+function spawnFish() {
+// Remove old fish
+document.querySelectorAll(".fish").forEach(f => f.remove());
+
+// Spawn 1–3 bonus fish
+let count = Math.floor(Math.random() * 3) + 1;
+for (let i = 0; i < count; i++) {
+let totalSlots = fishTypes.reduce((a,f)=>a+f.slots,0);
+let rand = Math.floor(Math.random()*totalSlots);
+let chosenFish;
+let sum = 0;
+for (let fish of fishTypes) {
+sum += fish.slots;
+if (rand < sum) {
+chosenFish = fish;
+break;
+}
+}
+
+let fishEl = document.createElement("div");
+fishEl.className = "fish";
+fishEl.style.backgroundImage = `url(${chosenFish.img})`;
+fishEl.dataset.multiplier = chosenFish.multiplier;
+
+fishEl.style.left = Math.random() * 350 + "px";
+fishEl.style.top = Math.random() * 350 + "px";
+
+document.getElementById("game").appendChild(fishEl);
+}
+}
+
+function spin() {
+if (spinning) return;
+spinning = true;
+
+spawnFish();
+
+// Choose one fish randomly for spin target
+const fishEls = document.querySelectorAll(".fish");
+const chosenFish = fishEls[Math.floor(Math.random() * fishEls.length)];
+const multi = chosenFish ? chosenFish.dataset.multiplier : 1;
+document.getElementById("multiplierDisplay").innerText = "Multiplier: x" + multi;
+
+// Spin wheel to align roughly with chosen fish (simulated)
+let deg = Math.floor(Math.random() * 360) + 1080; // 3 spins + random
+document.getElementById("wheel").style.transform = "rotate(" + deg + "deg)";
+
+// Show result after spin
+setTimeout(() => {
+alert(`You caught a ${chosenFish ? chosenFish.dataset.multiplier+"x fish" : "fish"}!`);
+spinning = false;
+}, 4000);
+}
+</script>
+
+</body>
+</html>
